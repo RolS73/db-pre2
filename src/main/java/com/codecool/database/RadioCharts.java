@@ -26,23 +26,22 @@ public class RadioCharts {
     }
 
     public String getMostPlayedSong() {
-        String artistName = "";
+        String songName = "";
 
         try (Connection conn = getConnection()) {
-            String sql = "SELECT artist FROM music_broadcast ORDER BY times_aired DESC LIMIT 2";
+            String sql = "SELECT song FROM music_broadcast ORDER BY times_aired DESC LIMIT 2";
             PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = st.executeQuery();
 
-            if (!(rs.isLast())) {
-                rs.next();
-                artistName = rs.getString(1);
+            if (rs.next()) {
+                songName = rs.getString(1);
             }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        return artistName;
+        return songName;
     }
 
     public String getMostActiveArtist() {
