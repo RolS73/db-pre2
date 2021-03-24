@@ -29,15 +29,13 @@ public class RadioCharts {
         String songName = "";
 
         try (Connection conn = getConnection()) {
-            String sql = "SELECT song FROM music_broadcast ORDER BY times_aired DESC LIMIT 2";
+            String sql = "SELECT song FROM music_broadcast GROUP BY song ORDER BY SUM(times_aired) DESC LIMIT 2";
             PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
                 songName = rs.getString(1);
             }
-
-            rs.close();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
