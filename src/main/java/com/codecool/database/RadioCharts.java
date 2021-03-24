@@ -37,6 +37,8 @@ public class RadioCharts {
                 songName = rs.getString(1);
             }
 
+            rs.close();
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -48,7 +50,7 @@ public class RadioCharts {
         String artistName = "";
 
         try (Connection conn = getConnection()) {
-            String sql = "SELECT artist, count(times_aired) AS activityCount FROM music_broadcast GROUP BY artist ORDER BY activityCount DESC";
+            String sql = "SELECT artist, count(DISTINCT song) AS songCount FROM music_broadcast GROUP BY artist ORDER BY songCount DESC";
             PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = st.executeQuery();
 
